@@ -11,7 +11,7 @@ import {
 import { db } from "@/lib/firebase";
 
 import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+// import { saveAs } from "file-saver";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -78,15 +78,13 @@ export default function Dashboard() {
   };
 
   const downloadExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(customers);
+  const worksheet = XLSX.utils.json_to_sheet(customers);
+  const workbook = XLSX.utils.book_new();
 
-    const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Customers");
 
-    XLSX.utils.book_append_sheet(
-      workbook,
-      worksheet,
-      "Customers"
-    );
+  XLSX.writeFile(workbook, "customers.xlsx");
+};
 
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
